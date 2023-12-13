@@ -22,6 +22,14 @@ class ProductController{
             res.status(200).json(result);
         })
     }
+    async getNewProducts(req, res) {
+        var query = "SELECT r.MaSanPham, r.TenSanPham, r.AnhDaiDien, g.Gia, r.MaLoaiSanPham FROM shopanvat.sanpham as r, shopanvat.giasanpham as g WHERE r.MaSanPham = g.MaSanPham";
+        console.log(query);
+        connection.query(query, (error, result) => {
+            if (error) res.status(500).send('Loi ket noi csdl');
+            res.status(200).json(result);
+        })
+    }
     async LaySPTheoid(req, res) {
         const id = req.params.idsp;
 

@@ -8,6 +8,8 @@ router.post('/taomoisanpham', async(req, res) => {
     await productController.TaoMoiSanPham(req, res);
 })
 
+router.get('/api/Products/get-sp-moi-nhat', async(req, res) => {
+    await productController.getNewProducts(req, res);
+})
+
 module.exports = router;
-
-
