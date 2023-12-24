@@ -24,6 +24,32 @@ router.get('/api/Home/GetSPtheoLoai/:id', async(req, res) => {
 router.post('/taomoisanpham', async(req, res) => {
     await home.TaoMoiSanPham(req, res);
 })
+//admin
+router.get('/api/SanPham/get-all-sanpham', async(req, res) => {
+    await home.LayAllSanPhamAdmin(req, res);
+})
 
+router.post('/api/sanpham/search', async(req, res) => {
+    await home.LayAllSanPhamAdminByName(req, res);
+})
 
+router.post('/api/User/authenticate', async(req, res) => {
+    await home.LoginAdmin(req, res);
+})
+
+router.get('/api/NhaCungCap/get-NhaCungCap', async(req, res) => {
+    await home.LayAllNCC(req, res);
+})
+router.get('/api/LoaiSanPham/get-loaisanpham', async(req, res) => {
+    await home.LayAllLoaiSanPham(req, res);
+})
+router.post('/api/sanpham/create-sanpham', async(req, res) => {
+    await home.ThemSanPham(req, res);
+})
+router.get('/api/sanpham/get-by-id/:id', async(req, res) => {
+    await home.LayAllSanPhamTheoId(req, res);
+})
+router.delete('/api/sanpham/delete-sanpham/:id', async(req, res) => {
+    await home.XoaSanPhamTheoId(req, res);
+})
 module.exports = router;
