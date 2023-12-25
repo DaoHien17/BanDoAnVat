@@ -46,6 +46,9 @@ router.get('/api/LoaiSanPham/get-loaisanpham', async(req, res) => {
 router.post('/api/sanpham/create-sanpham', async(req, res) => {
     await home.ThemSanPham(req, res);
 })
+router.post('/api/sanpham/update-sanpham', async(req, res) => {
+    await home.SuaSanPham(req, res);
+})
 router.get('/api/sanpham/get-by-id/:id', async(req, res) => {
     await home.LayAllSanPhamTheoId(req, res);
 })

@@ -110,6 +110,30 @@ class HomeController{
             }
         });
     }
+    async SuaSanPham(req, res){
+        var insertProductQuery = "UPDATE `SanPham` SET `TenSanPham` = N'"+ req.body.sanpham.TenSanPham +"', `MoTaSanPham` = N'"+req.body.sanpham.MoTaSanPham+"', `AnhDaiDien` = N'/assets/upload/sanpham/banhquy_3.jpg', `MaNhaCungCap` = "+req.body.sanpham.MaNhaCungCap+", `MaLoaiSanPham` = "+req.body.sanpham.MaLoaiSanPham+", `NgayTao` = NOW() WHERE `MaSanPham` = "+req.body.sanpham.MaSanPham+";";
+        console.log(insertProductQuery)
+        connection.query(insertProductQuery, (error, result) => {
+            if (error) {
+                res.status(500).send('Loi ket noi csdl');
+            } else {
+                // Lấy mã sản phẩm từ kết quả INSERT
+                var maSanPham = req.body.sanpham.MaSanPham;
+        
+                // Sử dụng mã sản phẩm để thêm vào bảng GiaSanPham
+                var insertPriceQuery = "UPDATE `GiaSanPham` SET `Gia` = " + req.body.sanpham.DonGia + " WHERE `MaSanPham` = " + maSanPham + ";";
+                console.log(insertPriceQuery)
+                connection.query(insertPriceQuery, (error, result) => {
+                    if (error) {
+                        res.status(500).send('Loi ket noi csdl');
+                    } else {
+                        // Trả về thành công nếu mọi thứ diễn ra đúng
+                        res.status(200).json(result);
+                    }
+                });
+            }
+        });
+    }
     async LayAllSanPhamTheoId(req, res){
         var query = "SELECT sp.TenSanPham AS TenSP, sp.MaLoaiSanPham AS maLoai, ls.TenLoaiSanPham AS TenLoai, ncc.TenNhaCungCap AS NCC, ncc.MaNhaCungCap AS maNCC, sp.MoTaSanPham AS MoTa, gs.Gia AS DonGia, sp.AnhDaiDien AS Anh, sp.NgayTao AS NgayTao, sp.MaSanPham AS MaSanPham FROM SanPham sp JOIN LoaiSanPham ls ON sp.MaLoaiSanPham = ls.MaLoaiSanPham JOIN NhaCungCap ncc ON sp.MaNhaCungCap = ncc.MaNhaCungCap JOIN GiaSanPham gs ON sp.MaSanPham = gs.MaSanPham WHERE sp.MaSanPham = "+req.params.id+" LIMIT 1;";
         console.log(query);
