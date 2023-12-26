@@ -28,7 +28,7 @@ class HomeController{
     }
     async LaySanPhamTheoIdP(req, res){
         const loaiId = req.params.id;
-        var query = 'SELECT r.MaSanPham, r.TenSanPham, r.AnhDaiDien, g.Gia, r.MaLoaiSanPham, c.Anh, r.MoTaSanPham, l.TenLoaiSanPham  FROM shopanvat.sanpham as r, shopanvat.loaisanpham as l, shopanvat.giasanpham as g, shopanvat.chitietanhsanpham as c WHERE r.MaLoaiSanPham = l.MaLoaiSanPham AND r.MaSanPham = g.MaSanPham AND r.MaSanPham = c.MaSanPham AND r.MaSanPham = '+ loaiId +" LIMIT 1";
+        var query = 'SELECT r.MaSanPham, r.TenSanPham, r.AnhDaiDien, g.Gia, r.MaLoaiSanPham, r.AnhDaiDien, r.MoTaSanPham, l.TenLoaiSanPham  FROM shopanvat.sanpham as r, shopanvat.loaisanpham as l, shopanvat.giasanpham as g WHERE r.MaLoaiSanPham = l.MaLoaiSanPham AND r.MaSanPham = g.MaSanPham AND r.MaSanPham = '+ loaiId +" LIMIT 1";
         console.log(query);
         connection.query(query,(error, result) =>{
             if (error) res.status(500).send('Loi ket noi csdl');
