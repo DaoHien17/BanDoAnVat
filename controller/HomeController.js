@@ -88,8 +88,8 @@ class HomeController{
         })
     }
     async ThemSanPham(req, res){
-        var insertProductQuery = "INSERT INTO `SanPham` (`TenSanPham`, `MoTaSanPham`, `AnhDaiDien`, `MaNhaCungCap`, `MaLoaiSanPham`, `NgayTao`) VALUES (N'"+ req.body.sanpham.TenSanPham +"', N'"+req.body.sanpham.MoTaSanPham+"', N'/assets/upload/sanpham/banhquy_3.jpg',"+req.body.sanpham.MaNhaCungCap+", "+req.body.sanpham.MaLoaiSanPham+", now());";
-
+        var insertProductQuery = "INSERT INTO `SanPham` (`TenSanPham`, `MoTaSanPham`, `AnhDaiDien`, `MaNhaCungCap`, `MaLoaiSanPham`, `NgayTao`) VALUES (N'"+ req.body.sanpham.TenSanPham +"', N'"+req.body.sanpham.MoTaSanPham+"', '"+req.body.sanpham.AnhDaiDien+"',"+req.body.sanpham.MaNhaCungCap+", "+req.body.sanpham.MaLoaiSanPham+", now());";
+        console.log(insertProductQuery)
         connection.query(insertProductQuery, (error, result) => {
             if (error) {
                 res.status(500).send('Loi ket noi csdl');
@@ -111,7 +111,7 @@ class HomeController{
         });
     }
     async SuaSanPham(req, res){
-        var insertProductQuery = "UPDATE `SanPham` SET `TenSanPham` = N'"+ req.body.sanpham.TenSanPham +"', `MoTaSanPham` = N'"+req.body.sanpham.MoTaSanPham+"', `AnhDaiDien` = N'/assets/upload/sanpham/banhquy_3.jpg', `MaNhaCungCap` = "+req.body.sanpham.MaNhaCungCap+", `MaLoaiSanPham` = "+req.body.sanpham.MaLoaiSanPham+", `NgayTao` = NOW() WHERE `MaSanPham` = "+req.body.sanpham.MaSanPham+";";
+        var insertProductQuery = "UPDATE `SanPham` SET `TenSanPham` = N'"+ req.body.sanpham.TenSanPham +"', `MoTaSanPham` = N'"+req.body.sanpham.MoTaSanPham+"', `AnhDaiDien` = '"+req.body.sanpham.AnhDaiDien+"', `MaNhaCungCap` = "+req.body.sanpham.MaNhaCungCap+", `MaLoaiSanPham` = "+req.body.sanpham.MaLoaiSanPham+", `NgayTao` = now() WHERE `MaSanPham` = "+req.body.sanpham.MaSanPham+";";
         console.log(insertProductQuery)
         connection.query(insertProductQuery, (error, result) => {
             if (error) {
@@ -143,8 +143,7 @@ class HomeController{
         })
     }
     async XoaSanPhamTheoId(req, res){
-        var id = req.params.id;
-        var query = "DELETE FROM sanpham where MaSanPham = "+id;
+        var query = "UPDATE FROM loaisanpham where MaSanPham = "+req.body.sanpham.TenSanPham;
         console.log(query);
         connection.query(query,(error, result) =>{
             if (error) res.status(500).send('Loi ket noi csdl');
@@ -155,7 +154,50 @@ class HomeController{
                 res.json(result);
             })
         })
+    }
+    async SuaSanPhamTheoId(req, res){
+        var id = req.params.id;
+        var query = "UPDATE `LoaiSanPham` SET TenLoaiSanPham = '"+req.body.loaisanpham.TenLoaiSanPham+"' WHERE `MaLoaiSanPham` = "+req.body.loaisanpham.MaLoaiSanPham+";";
+        console.log(query);
+        connection.query(query,(error, result) =>{
+            if (error) res.status(500).send('Loi ket noi csdl');
+                res.json(result);
+        })
+    }
+    async ThemLoaiSanPham(req, res){
+        var insertProductQuery = "INSERT INTO `loaisanpham` (`TenLoaiSanPham`) VALUES ('"+ req.body.loaisanpham.TenLoaiSanPham +"');";
+        console.log(insertProductQuery)
+        connection.query(insertProductQuery, (error, result) => {
+            if (error) {
+                res.status(500).send('Loi ket noi csdl');
+            } else {
+                // Trả về thành công nếu mọi thứ diễn ra đúng
+                res.status(200).json(result);
+            }
+        });
+    }
 
+    async XoaLoaiSanPhamTheoId(req, res){
+        var id = req.params.id;
+        var query = "DELETE FROM loaisanpham where MaLoaiSanPham = "+id;
+        console.log(query);
+        connection.query(query,(error, result) =>{
+            if (error) res.status(500).send('Loi ket noi csdl');
+            var query = "DELETE FROM sanpham where MaLoaiSanPham = "+id;
+            console.log(query);
+            connection.query(query,(error, result) =>{
+                if (error) res.status(500).send('Loi ket noi csdl');
+                res.json(result);
+            })
+        })
+    }
+    async LayLoaiSanPhamTheoId(req, res){
+        var query = "SELECT * FROM loaisanpham where MaLoaiSanPham = "+req.params.id;
+        console.log(query);
+        connection.query(query,(error, result) =>{
+            if (error) res.status(500).send('Loi ket noi csdl');
+            res.json(result);
+        })
     }
 }
 module.exports = HomeController;
