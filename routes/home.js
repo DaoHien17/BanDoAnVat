@@ -67,4 +67,17 @@ router.delete('/api/loaisanpham/delete-loaisanpham/:id', async(req, res) => {
 router.get('/api/loaisanpham/get-by-id/:id', async(req, res) => {
     await home.LayLoaiSanPhamTheoId(req, res);
 })
+
+router.post('/api/sanpham/create-nhacungcap', async(req, res) => {
+    await home.ThemNhaCungCap(req, res);
+})
+router.post('/api/sanpham/update-nhacungcap', async(req, res) => {
+    await home.SuaNhaCungCapTheoId(req, res);
+})
+router.delete('/api/nhacungcap/delete-nhacungcap/:id', async(req, res) => {
+    await home.XoaNhaCungCapTheoId(req, res);
+})
+router.get('/api/nhacungcap/get-by-id/:id', async(req, res) => {
+    await home.LayNhaCungCapTheoId(req, res);
+})
 module.exports = router;
