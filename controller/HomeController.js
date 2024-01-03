@@ -242,5 +242,48 @@ class HomeController{
             }
         });
     }
+    async ThemDonHang(req, res){
+        console.log(req.body)
+        var insertProductQuery = "INSERT INTO `shopanvat`.`thanhtoan` (`TenKhachHang`, `DiaChi`, `SoDienThoai`, `Email`) VALUES (?, ?, ?, ?)";
+        console.log(insertProductQuery);
+
+        const khach = req.body.khach;
+        const khachValues = [khach.TenKhachHang, khach.DiaChi, khach.SoDienThoai, khach.Email];
+
+        connection.query(insertProductQuery, khachValues, (error, result) => {
+            if (error) {
+                res.status(500).send('Loi ket noi csdl');
+            } else {
+                const maThanhToan = result.insertId;
+                let insertPriceQuery = "INSERT INTO `shopanvat`.`chitietthanhtoan` (`MaThanhToan`, `MaSanPham`, `SoLuong`, `GiaMua`,`TenSP`,`AnhDaiDien`) VALUES ";
+                const donHangValues = req.body.donhang.map(item => [maThanhToan, item.MaSanPham, item.SoLuong, item.GiaMua,item.TenSP, item.Anh]);
+                
+                insertPriceQuery += donHangValues.map(() => "(?, ?, ?, ?, ?, ?)").join(", ");
+                
+                connection.query(insertPriceQuery, donHangValues.flat(), (error, result) => {
+                    if (error) {
+                        res.status(500).send('Loi ket noi csdl');
+                    } else {
+                        res.status(200).json(result);
+                    }
+                        });
+                    }
+         });
+    }
+    async LayAllOrder(req, res){
+        var query = 'select tt.*,sum(cttt.GiaMua) as `TongTien` from `thanhtoan` tt, `chitietthanhtoan` cttt where tt.MaThanhToan = cttt.MaThanhToan group by tt.MaThanhToan;';
+        connection.query(query,(error, result) =>{
+            if (error) res.status(500).send('Loi ket noi csdl');
+            res.json(result);
+        })
+    }
+    async LayOrderTheoId(req, res){
+        var query = "select * from chitietthanhtoan where MaThanhToan = "+req.params.id;
+        console.log(query);
+        connection.query(query,(error, result) =>{
+            if (error) res.status(500).send('Loi ket noi csdl');
+            res.json(result);
+        })
+    }
 }
 module.exports = HomeController;

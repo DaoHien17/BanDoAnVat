@@ -80,4 +80,13 @@ router.delete('/api/nhacungcap/delete-nhacungcap/:id', async(req, res) => {
 router.get('/api/nhacungcap/get-by-id/:id', async(req, res) => {
     await home.LayNhaCungCapTheoId(req, res);
 })
+router.post('/api/Customer/addcart', async(req, res) => {
+    await home.ThemDonHang(req, res);
+})
+router.get('/api/order/getAllOrder', async(req, res) => {
+    await home.LayAllOrder(req, res);
+})
+router.get('/api/order/get-by-id/:id', async(req, res) => {
+    await home.LayOrderTheoId(req, res);
+})
 module.exports = router;
