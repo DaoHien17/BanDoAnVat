@@ -18,12 +18,12 @@ class HomeController{
             res.json(result);
         })
     }
-    async LayAllSanPham(req, res){
+    async LayAllSanPham(req, res){ // lấy all sp
        
         var query = 'SELECT r.MaSanPham, r.TenSanPham, r.AnhDaiDien, g.Gia, r.MaLoaiSanPham FROM shopanvat.sanpham as r, shopanvat.giasanpham as g where r.MaSanPham = g.MaSanPham;';
         connection.query(query,(error, result) =>{
             if (error) res.status(500).send('Loi ket noi csdl');
-            res.json(result);
+            res.json(result); //trả về 1 chuỗi json
         })
     }
     async LaySanPhamTheoIdP(req, res){
@@ -271,7 +271,7 @@ class HomeController{
          });
     }
     async LayAllOrder(req, res){
-        var query = 'select tt.*,sum(cttt.GiaMua) as `TongTien` from `thanhtoan` tt, `chitietthanhtoan` cttt where tt.MaThanhToan = cttt.MaThanhToan group by tt.MaThanhToan;';
+        var query = 'select tt.*,sum(cttt.GiaMua*cttt.SoLuong)  as `TongTien` from `thanhtoan` tt, `chitietthanhtoan` cttt where tt.MaThanhToan = cttt.MaThanhToan group by tt.MaThanhToan;';
         connection.query(query,(error, result) =>{
             if (error) res.status(500).send('Loi ket noi csdl');
             res.json(result);
